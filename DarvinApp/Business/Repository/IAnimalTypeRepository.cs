@@ -5,6 +5,6 @@ namespace DarvinApp.Business.Repository
 {
     public interface IAnimalTypeRepository
     {
-        private IList<AnimalType> AnimalTypeList();
+         IList<AnimalType> AnimalTypeList();
     }
 }
