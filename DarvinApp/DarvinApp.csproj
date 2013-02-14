@@ -70,14 +70,15 @@
     <Compile Include="Business\Repository\IQuestionRepository.cs" />
     <Compile Include="Business\DataTypes\Question.cs" />
     <Compile Include="DataAccess\JSON\JSONAnimalRepository.cs" />
-    <Compile Include="DataAccess\Stub\StubAnimalTypeRepository.cs" />
-    <Compile Include="DataAccess\Stub\StubQuestionRepository.cs" />
+    <Compile Include="DataAccess\Hardcode\HardcodeAnimalTypeRepository.cs" />
+    <Compile Include="DataAccess\Hardcode\HardcodeQuestionRepository.cs" />
     <Compile Include="Presentation\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Presentation\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

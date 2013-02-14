@@ -1,2 +1,13 @@
 c:\users\nbuchina\documents\visual studio 2012\Projects\DarvinApp\DarvinApp\bin\Debug\DarvinApp.exe.config
 C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\bin\Debug\DarvinApp.exe.config
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\Presentation\MainWindow.baml
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\Presentation\MainWindow.g.cs
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\App.g.cs
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\DarvinApp_MarkupCompile.cache
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\DarvinApp.g.resources
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\DarvinApp.Properties.Resources.resources
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\DarvinApp.csproj.GenerateResource.Cache
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\bin\Debug\DarvinApp.exe
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\bin\Debug\DarvinApp.pdb
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\DarvinApp.exe
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\obj\Debug\DarvinApp.pdb
