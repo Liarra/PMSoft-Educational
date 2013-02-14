@@ -1,0 +1,2 @@
+c:\users\nbuchina\documents\visual studio 2012\Projects\DarvinApp\DarvinApp\bin\Debug\DarvinApp.exe.config
+C:\Users\nbuchina\Documents\GitHub\PMSoft-Educational\DarvinApp\bin\Debug\DarvinApp.exe.config
