@@ -49,7 +49,7 @@ namespace DarvinApp.Business
             int secondScoreInTable = 0;
 
             foreach (int score in _scoretable.Values)
-                if (score > maxScoreInTable)
+                if (score >= maxScoreInTable)
                 {
                     secondScoreInTable = maxScoreInTable;
                     maxScoreInTable = score;
