@@ -44,12 +44,35 @@ local.properties
 # Build results
 
 [Dd]ebug/
+debug\
+Debug\*
 [Rr]elease/
 x64/
 bin/*
 build/
 [Bb]in[/\]
-[Oo]bj/
+[Oo]bj/*
+
+\Obj\*
+\obj\*
+
+*_p.c
+
+ *.ncb
+
+ *.suo
+
++*.sln.ide/
+
+ *.tlb
+
+ *.tlh
+
+ *.bak
+
+DarvinApp\obj\Debug\*
+
+*/DarvinApp/obj/Debug/*
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
