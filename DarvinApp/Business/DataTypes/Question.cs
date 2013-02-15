@@ -4,8 +4,13 @@ namespace DarvinApp.Business.DataTypes
 {
     public class Question
     {
+        public Question(string text)
+        {
+            Text = text;
+        }
+
         public string Text { get; set; }
-        private IList<AnimalType> _typesGettingScoreFromPositiveAnswer;
-        private IList<AnimalType> _typesLosingScoreFromPositiveAnswer;
+        public IList<AnimalType> TypesGettingScoreFromPositiveAnswer { get; set; }
+        public IList<AnimalType> TypesLosingScoreFromPositiveAnswer { get; set; }
     }
 }
