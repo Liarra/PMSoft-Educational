@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using DarvinApp.Business.DataTypes;
+using DarvinApp.DataAccess.Hardcode;
 using DarvinApp.Presentation;
 
 namespace DarvinApp
@@ -13,7 +14,7 @@ namespace DarvinApp
         {
             base.OnStartup(e);
 
-            var window = new MainWindow{ DataContext = new ViewModel{CurrentQuestion = new Question{Text = "Nyananananana"}} };
+            var window = new MainWindow{ DataContext = new ViewModel(new HardcodeQuestionRepository()){CurrentQuestion = new Question("Nyananananana")} };
             window.Show();
         }
     }
