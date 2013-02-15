@@ -1,19 +1,87 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DarvinApp.Business.DataTypes;
 
 namespace DarvinApp.Business
 {
-    public class Expert:IExpert
+    public class Expert : IExpert
     {
-        public IList<AnimalType> SupportedTypes { get; set; }
+        private readonly IList<AnimalType> _supportedTypes;
+        private readonly Dictionary<AnimalType, int> _scoretable;
+
+        public Expert()
+        {
+            _supportedTypes = new List<AnimalType>
+                {
+                    AnimalType.Emperors,
+                    AnimalType.FlowerVaseBreakers,
+                    AnimalType.LookingLikeFlies,
+                    AnimalType.Others,
+                    AnimalType.Piglets,
+                    AnimalType.RunningLikeCrazy,
+                    AnimalType.StrayDogs,
+                    AnimalType.Tale,
+                    AnimalType.Tamed
+                };
+
+            _scoretable = new Dictionary<AnimalType, int>();
+            FillTheDictionaryWithZeros();
+        }
+
+        private void FillTheDictionaryWithZeros()
+        {
+            foreach (var supportedType in SupportedTypes)
+            {
+                _scoretable.Add(supportedType, 0);
+            }
+        }
+
+        public IList<AnimalType> SupportedTypes
+        {
+            get { return _supportedTypes; }
+        }
+
+        private const int DifferenceNeededToDecide = 1;
+
         public bool ReadyToDecide()
         {
-            throw new System.NotImplementedException();
+            int maxScoreInTable = 0;
+            int secondScoreInTable = 0;
+
+            foreach (int score in _scoretable.Values)
+                if (score > maxScoreInTable)
+                {
+                    secondScoreInTable = maxScoreInTable;
+                    maxScoreInTable = score;
+                }
+
+            if (maxScoreInTable - secondScoreInTable >= DifferenceNeededToDecide) return true;
+            return false;
         }
 
         public AnimalType Decision()
         {
-            throw new System.NotImplementedException();
+            if(!ReadyToDecide())return AnimalType.Others;
+            int maxScoreInTable = 0;
+            AnimalType currentWinner=AnimalType.Others;
+
+            foreach (KeyValuePair<AnimalType, int> record in _scoretable)
+                if (record.Value > maxScoreInTable)
+                {
+                    maxScoreInTable = record.Value;
+                    currentWinner = record.Key;
+                }
+            return currentWinner;
+        }
+
+        public void SubmitAnswer(Question questionAnswered, bool answer)
+        {
+            if(!answer)return;
+            foreach (AnimalType questionPromotedAnimalType in questionAnswered.TypesGettingScoreFromPositiveAnswer)
+                _scoretable[questionPromotedAnimalType]++;
+
+            foreach (AnimalType questionReducedAnimalType in questionAnswered.TypesLosingScoreFromPositiveAnswer)
+                _scoretable[questionReducedAnimalType]--;
         }
     }
 }
