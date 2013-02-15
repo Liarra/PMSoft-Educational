@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="336.773" Width="453.779">
     <Grid >
-        <Button Content="Нет" HorizontalAlignment="Left" Height="26" Margin="392,271,0,0" VerticalAlignment="Top" Width="44"/>
-        <Button Content="Да" HorizontalAlignment="Left" Height="26" Margin="346,271,0,0" VerticalAlignment="Top" Width="41" />
+        <Button Content="Нет" HorizontalAlignment="Left" Height="26" Margin="392,271,0,0" VerticalAlignment="Top" Width="44" Command="{Binding NoButtonPushed}"/>
+        <Button Content="Да" HorizontalAlignment="Left" Height="26" Margin="346,271,0,0" VerticalAlignment="Top" Width="41"  Command="{Binding YesButtonPushed}"/>
         <TextBlock HorizontalAlignment="Left" Height="243" Margin="219,10,0,0" TextWrapping="Wrap" Text="{Binding CurrentQuestion.Text}" VerticalAlignment="Top" Width="217"/>
 
     </Grid>
