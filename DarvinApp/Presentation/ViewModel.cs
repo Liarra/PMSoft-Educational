@@ -1,22 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+using DarvinApp.Business;
 using DarvinApp.Business.DataTypes;
 using DarvinApp.Business.Repository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
 namespace DarvinApp.Presentation
 {
-    public class ViewModel
+    public class ViewModel:ViewModelBase
     {
-        public Question CurrentQuestion { get; set; }
+        public Question CurrentQuestion { get { return AvailableQuestions[_questionListIndex]; } }
         private int _questionListIndex;
         private IList<Question> AvailableQuestions { get; set; }
         private ICommand _yesButtonPushed, _noButtonPushed;
+        private IExpert _expert;
 
-        public ViewModel(IQuestionRepository questionsSource)
+        public ViewModel(IQuestionRepository questionsSource,IExpert expert)
         {
             _questionListIndex = 0;
             AvailableQuestions = questionsSource.GetAllQuestions();
+            _expert = expert;
         }
 
         public ICommand YesButtonPushed
@@ -31,9 +35,9 @@ namespace DarvinApp.Presentation
 
         private void SelectNextQuestion()
         {
-            if(AvailableQuestions.Count==0)return;
-            CurrentQuestion = AvailableQuestions[_questionListIndex++];
-            _questionListIndex = _questionListIndex%AvailableQuestions.Count;
+            if (AvailableQuestions.Count == 0) return;
+            _questionListIndex = ++_questionListIndex%AvailableQuestions.Count;
+            RaisePropertyChanged(()=>CurrentQuestion);
         }
     }
 }
