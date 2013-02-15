@@ -7,6 +7,8 @@ namespace DarvinApp.Business.DataTypes
         public Question(string text)
         {
             Text = text;
+            TypesLosingScoreFromPositiveAnswer=new List<AnimalType>();
+            TypesGettingScoreFromPositiveAnswer = new List<AnimalType>();
         }
 
         public string Text { get; set; }
