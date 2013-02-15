@@ -1,13 +1,12 @@
 ﻿using System.Windows;
 using DarvinApp.Business;
-using DarvinApp.Business.DataTypes;
 using DarvinApp.DataAccess.Hardcode;
 using DarvinApp.Presentation;
 
 namespace DarvinApp
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
@@ -15,7 +14,14 @@ namespace DarvinApp
         {
             base.OnStartup(e);
 
-            var window = new MainWindow{ DataContext = new ViewModel(new HardcodeQuestionRepository(), new Expert())};
+            var window = new MainWindow
+                {
+                    DataContext = new MainWindowModel(new HardcodeQuestionRepository(), new Expert())
+                        {
+                            NamingDialog = new NamingDialog()
+                        },
+                };
+
             window.Show();
         }
     }
