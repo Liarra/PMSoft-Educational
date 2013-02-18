@@ -17,10 +17,9 @@ namespace DarvinApp
 
             var window = new MainWindow
                 {
-                    DataContext = new MainWindowModel(new HardcodeQuestionRepository(), new JsonAnimalRepository("AnimalTypes.txt"),  new Expert())
-                        {
-                            NamingDialog = new NamingDialog()
-                        },
+                    DataContext =
+                        new MainWindowModel(new HardcodeQuestionRepository(),
+                                            new JsonAnimalRepository("AnimalTypes.txt"), new Expert())
                 };
 
             window.Show();

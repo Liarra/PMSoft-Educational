@@ -11,7 +11,6 @@ namespace DarvinApp.Presentation
 {
     public class MainWindowModel : ViewModelBase
     {
-
         private int _questionListIndex;
         private IList<Question> AvailableQuestions { get; set; }
 
@@ -20,7 +19,7 @@ namespace DarvinApp.Presentation
         private ICommand _yesButtonPushed, _noButtonPushed;
         private NamingDialog _namingDialog;
 
-        private IAnimalRepository _animalRepository;
+        private readonly IAnimalRepository _animalRepository;
 
         public Question CurrentQuestion
         {
@@ -29,11 +28,12 @@ namespace DarvinApp.Presentation
 
         public NamingDialog NamingDialog
         {
-            get { return _namingDialog ?? new NamingDialog(); }
+            get { return _namingDialog ?? (_namingDialog = new NamingDialog()); }
             set { _namingDialog = value; }
         }
 
-        public MainWindowModel(IQuestionRepository questionsSource, IAnimalRepository animalSavingDestination, IExpert expert)
+        public MainWindowModel(IQuestionRepository questionsSource, IAnimalRepository animalSavingDestination,
+                               IExpert expert)
         {
             _questionListIndex = 0;
             AvailableQuestions = questionsSource.GetAllQuestions();
@@ -96,7 +96,8 @@ namespace DarvinApp.Presentation
                     AnimalType animalType = Expert.Decision();
                     string animalName = NamingDialog.AnimalNameBox.Text;
 
-                    _animalRepository.WriteNewAnimal(animalName,animalType);
+                    _animalRepository.WriteNewAnimal(animalName, animalType);
+                    MessageBox.Show("Животное сохранено");
                     Application.Current.Shutdown(0);
                 });
             NamingDialog.ShowDialog();
