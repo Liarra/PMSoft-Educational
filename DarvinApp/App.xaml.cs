@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using DarvinApp.Business;
 using DarvinApp.DataAccess.Hardcode;
+using DarvinApp.DataAccess.JSON;
 using DarvinApp.Presentation;
 
 namespace DarvinApp
@@ -16,7 +17,7 @@ namespace DarvinApp
 
             var window = new MainWindow
                 {
-                    DataContext = new MainWindowModel(new HardcodeQuestionRepository(), new Expert())
+                    DataContext = new MainWindowModel(new HardcodeQuestionRepository(), new JsonAnimalRepository("AnimalTypes.txt"),  new Expert())
                         {
                             NamingDialog = new NamingDialog()
                         },

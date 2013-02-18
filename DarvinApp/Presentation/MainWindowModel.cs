@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using DarvinApp.Business;
 using DarvinApp.Business.DataTypes;
@@ -10,16 +11,21 @@ namespace DarvinApp.Presentation
 {
     public class MainWindowModel : ViewModelBase
     {
+
+        private int _questionListIndex;
+        private IList<Question> AvailableQuestions { get; set; }
+
+        public IExpert Expert { get; set; }
+
+        private ICommand _yesButtonPushed, _noButtonPushed;
+        private NamingDialog _namingDialog;
+
+        private IAnimalRepository _animalRepository;
+
         public Question CurrentQuestion
         {
             get { return AvailableQuestions[_questionListIndex]; }
         }
-
-        private int _questionListIndex;
-        private IList<Question> AvailableQuestions { get; set; }
-        public IExpert Expert { get; set; }
-        private ICommand _yesButtonPushed, _noButtonPushed;
-        private NamingDialog _namingDialog;
 
         public NamingDialog NamingDialog
         {
@@ -27,11 +33,12 @@ namespace DarvinApp.Presentation
             set { _namingDialog = value; }
         }
 
-        public MainWindowModel(IQuestionRepository questionsSource, IExpert expert)
+        public MainWindowModel(IQuestionRepository questionsSource, IAnimalRepository animalSavingDestination, IExpert expert)
         {
             _questionListIndex = 0;
             AvailableQuestions = questionsSource.GetAllQuestions();
             Expert = expert;
+            _animalRepository = animalSavingDestination;
         }
 
         public ICommand YesButtonPushed
@@ -83,8 +90,16 @@ namespace DarvinApp.Presentation
 
         private void ShowResultDialog()
         {
-            _namingDialog.TypeLabel.Content = Expert.DecisionString();
-            _namingDialog.ShowDialog();
+            NamingDialog.TypeLabel.Content = Expert.DecisionString();
+            NamingDialog.SaveAnimalButton.Command = new RelayCommand(() =>
+                {
+                    AnimalType animalType = Expert.Decision();
+                    string animalName = NamingDialog.AnimalNameBox.Text;
+
+                    _animalRepository.WriteNewAnimal(animalName,animalType);
+                    Application.Current.Shutdown(0);
+                });
+            NamingDialog.ShowDialog();
         }
     }
 }

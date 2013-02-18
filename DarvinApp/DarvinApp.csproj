@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -81,7 +82,7 @@
     <Compile Include="Business\Repository\IAnimalTypeRepository.cs" />
     <Compile Include="Business\Repository\IQuestionRepository.cs" />
     <Compile Include="Business\DataTypes\Question.cs" />
-    <Compile Include="DataAccess\JSON\JSONAnimalRepository.cs" />
+    <Compile Include="DataAccess\JSON\JsonAnimalRepository.cs" />
     <Compile Include="DataAccess\Hardcode\HardcodeQuestionRepository.cs" />
     <Compile Include="Presentation\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -96,7 +97,7 @@
     <Compile Include="Presentation\NamingDialog.xaml.cs">
       <DependentUpon>NamingDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\ViewModel.cs" />
+    <Compile Include="Presentation\MainWindowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
