@@ -23,7 +23,7 @@ namespace DarvinApp.Presentation
 
         public NamingDialog NamingDialog
         {
-            get { return _namingDialog ?? new NamingDialog(); } 
+            get { return _namingDialog ?? new NamingDialog(); }
             set { _namingDialog = value; }
         }
 
@@ -57,7 +57,7 @@ namespace DarvinApp.Presentation
                                Expert.SubmitAnswer(CurrentQuestion, false);
                                SelectNextQuestion();
                            }
-                   ));
+                                              ));
             }
         }
 
@@ -65,12 +65,26 @@ namespace DarvinApp.Presentation
         private void SelectNextQuestion()
         {
             if (AvailableQuestions.Count == 0) return;
+            if (Expert.ReadyToDecide())
+            {
+                ShowResultDialog();
+                return;
+            }
+
             if (_questionListIndex == AvailableQuestions.Count)
             {
-                
+                ShowResultDialog();
+                return;
             }
+
             _questionListIndex = ++_questionListIndex%AvailableQuestions.Count;
             RaisePropertyChanged(() => CurrentQuestion);
+        }
+
+        private void ShowResultDialog()
+        {
+            _namingDialog.TypeLabel.Content = Expert.DecisionString();
+            _namingDialog.ShowDialog();
         }
     }
 }

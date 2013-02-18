@@ -23,5 +23,6 @@ namespace DarvinApp.Presentation
         {
             InitializeComponent();
         }
+
     }
 }

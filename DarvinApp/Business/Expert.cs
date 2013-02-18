@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using DarvinApp.Business.DataTypes;
 
 namespace DarvinApp.Business
@@ -72,6 +74,26 @@ namespace DarvinApp.Business
                     currentWinner = record.Key;
                 }
             return currentWinner;
+        }
+
+        public String DecisionString()
+        {
+            AnimalType animalType = Decision();
+            Type type = typeof(AnimalType);
+
+            MemberInfo[] memInfo = type.GetMember(animalType.ToString());
+
+            if (memInfo != null && memInfo.Length > 0)
+            {
+                object[] attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attrs != null && attrs.Length > 0)
+                {
+                    return ((DescriptionAttribute)attrs[0]).Description;
+                }
+            }
+
+            return animalType.ToString();
         }
 
         public void SubmitAnswer(Question questionAnswered, bool answer)
