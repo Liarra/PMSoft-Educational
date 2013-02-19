@@ -79,7 +79,6 @@
     <Compile Include="Business\Expert.cs" />
     <Compile Include="Business\IExpert.cs" />
     <Compile Include="Business\Repository\IAnimalRepository.cs" />
-    <Compile Include="Business\Repository\IAnimalTypeRepository.cs" />
     <Compile Include="Business\Repository\IQuestionRepository.cs" />
     <Compile Include="Business\DataTypes\Question.cs" />
     <Compile Include="DataAccess\JSON\JsonAnimalRepository.cs" />
