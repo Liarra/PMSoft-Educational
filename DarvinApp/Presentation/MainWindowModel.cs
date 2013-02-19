@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using DarvinApp.Business;
@@ -12,7 +13,7 @@ namespace DarvinApp.Presentation
     public class MainWindowModel : ViewModelBase
     {
         private int _questionListIndex;
-        private IList<Question> AvailableQuestions { get; set; }
+        public IList<Question> AvailableQuestions { get; set; }
 
         public IExpert Expert { get; set; }
 
@@ -36,9 +37,17 @@ namespace DarvinApp.Presentation
                                IExpert expert)
         {
             _questionListIndex = 0;
-            AvailableQuestions = questionsSource.GetAllQuestions();
+
+            if (expert == null)
+                throw new NullReferenceException("It's impossible to create expert system model without IExpert");
             Expert = expert;
+
             _animalRepository = animalSavingDestination;
+
+            if (questionsSource == null)
+                throw new NullReferenceException(
+                    "It's impossible to create expert system model without IQuestionRepository");
+            AvailableQuestions = questionsSource.GetAllQuestions();
         }
 
         public ICommand YesButtonPushed
@@ -48,6 +57,7 @@ namespace DarvinApp.Presentation
                 return _yesButtonPushed ??
                        (_yesButtonPushed = new RelayCommand(() =>
                            {
+                               if (AvailableQuestions.Count == 0) return;
                                Expert.SubmitAnswer(CurrentQuestion, true);
                                SelectNextQuestion();
                            }));
@@ -61,6 +71,7 @@ namespace DarvinApp.Presentation
                 return _noButtonPushed ??
                        (_noButtonPushed = new RelayCommand(() =>
                            {
+                               if (AvailableQuestions.Count == 0) return;
                                Expert.SubmitAnswer(CurrentQuestion, false);
                                SelectNextQuestion();
                            }
@@ -71,20 +82,18 @@ namespace DarvinApp.Presentation
 
         private void SelectNextQuestion()
         {
-            if (AvailableQuestions.Count == 0) return;
             if (Expert.ReadyToDecide())
             {
                 ShowResultDialog();
                 return;
             }
 
-            if (_questionListIndex == AvailableQuestions.Count)
+            if (_questionListIndex == AvailableQuestions.Count-1)
             {
                 ShowResultDialog();
                 return;
             }
-
-            _questionListIndex = ++_questionListIndex%AvailableQuestions.Count;
+            _questionListIndex++;
             RaisePropertyChanged(() => CurrentQuestion);
         }
 
