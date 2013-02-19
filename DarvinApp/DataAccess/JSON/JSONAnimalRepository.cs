@@ -32,13 +32,13 @@ namespace DarvinApp.DataAccess.JSON
 
         private IList<Animal> GetAnimalsArrayFromFile()
         {
-            FileStream fs = new FileStream(FileName,FileMode.OpenOrCreate);
-            var reader = new StreamReader(fs);
-            String jsonString = reader.ReadToEnd();
-            reader.Close();
-
-            var animalList = _serializer.Deserialize<List<Animal>>(jsonString) ?? new List<Animal>();
-            return animalList;
+            using (Stream fileStream = new FileStream(FileName, FileMode.Open))
+            {
+                var reader = new StreamReader(fileStream);
+                String jsonString = reader.ReadToEnd();
+                var animalList = _serializer.Deserialize<List<Animal>>(jsonString) ?? new List<Animal>();
+                return animalList;
+            }
         }
 
         private void WriteAnimalsArrayToFile(IList<Animal> animals)

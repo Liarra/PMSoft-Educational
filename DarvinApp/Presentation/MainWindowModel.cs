@@ -88,7 +88,7 @@ namespace DarvinApp.Presentation
                 return;
             }
 
-            if (_questionListIndex == AvailableQuestions.Count-1)
+            if (_questionListIndex == AvailableQuestions.Count - 1)
             {
                 ShowResultDialog();
                 return;
@@ -100,6 +100,9 @@ namespace DarvinApp.Presentation
         private void ShowResultDialog()
         {
             NamingDialog.TypeLabel.Content = Expert.DecisionString();
+            NamingDialog.Closed += (sender, e) => { Application.Current.Shutdown(0); }
+                ;
+
             NamingDialog.SaveAnimalButton.Command = new RelayCommand(() =>
                 {
                     AnimalType animalType = Expert.Decision();
