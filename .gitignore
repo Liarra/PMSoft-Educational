@@ -1,7 +1,6 @@
 *.cache
 *\Debug\*
 *.v11.suo
-*.csproj
 
 #################
 ## Eclipse
