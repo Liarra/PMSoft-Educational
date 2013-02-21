@@ -17,7 +17,8 @@ namespace DarvinApp.Presentation
 
         public IExpert Expert { get; set; }
 
-        private ICommand _yesButtonPushed, _noButtonPushed;
+        private ICommand _yesButtonPushed;
+        private ICommand _noButtonPushed;
         private NamingDialog _namingDialog;
 
         private readonly IAnimalRepository _animalRepository;
@@ -36,17 +37,16 @@ namespace DarvinApp.Presentation
         public MainWindowModel(IQuestionRepository questionsSource, IAnimalRepository animalSavingDestination,
                                IExpert expert)
         {
-            _questionListIndex = 0;
-
-            if (expert == null)
-                throw new NullReferenceException("It's impossible to create expert system model without IExpert");
-            Expert = expert;
-
-            _animalRepository = animalSavingDestination;
-
             if (questionsSource == null)
-                throw new NullReferenceException(
-                    "It's impossible to create expert system model without IQuestionRepository");
+                throw new ArgumentNullException("questionsSource");
+            if (animalSavingDestination == null)
+                throw new ArgumentNullException("animalSavingDestination");
+            if (expert == null)
+                throw new ArgumentNullException("expert");
+
+            _questionListIndex = 0;
+            Expert = expert;
+            _animalRepository = animalSavingDestination;
             AvailableQuestions = questionsSource.GetAllQuestions();
         }
 
@@ -68,14 +68,12 @@ namespace DarvinApp.Presentation
         {
             get
             {
-                return _noButtonPushed ??
-                       (_noButtonPushed = new RelayCommand(() =>
-                           {
-                               if (AvailableQuestions.Count == 0) return;
-                               Expert.SubmitAnswer(CurrentQuestion, false);
-                               SelectNextQuestion();
-                           }
-                                              ));
+                return _noButtonPushed ?? (_noButtonPushed = new RelayCommand(() =>
+                    {
+                        if (AvailableQuestions.Count == 0) return;
+                        Expert.SubmitAnswer(CurrentQuestion, false);
+                        SelectNextQuestion();
+                    }));
             }
         }
 
@@ -100,15 +98,14 @@ namespace DarvinApp.Presentation
         private void ShowResultDialog()
         {
             NamingDialog.TypeLabel.Content = Expert.DecisionString();
-            NamingDialog.Closed += (sender, e) => { Application.Current.Shutdown(0); }
-                ;
+            NamingDialog.Closed += (sender, e) => Application.Current.Shutdown(0);
 
             NamingDialog.SaveAnimalButton.Command = new RelayCommand(() =>
                 {
                     AnimalType animalType = Expert.Decision();
                     string animalName = NamingDialog.AnimalNameBox.Text;
 
-                    _animalRepository.WriteNewAnimal(animalName, animalType);
+                    _animalRepository.WriteNewAnimal(new Animal {Name = animalName,Type = animalType});
                     MessageBox.Show("Животное сохранено");
                     Application.Current.Shutdown(0);
                 });

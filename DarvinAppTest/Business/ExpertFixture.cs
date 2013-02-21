@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace DarvinAppTest.Business
 {
+    [TestFixture]
     public class ExpertFixture
     {
         [Test]

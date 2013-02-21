@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Web.Script.Serialization;
 using DarvinApp.Business.DataTypes;
@@ -10,18 +9,18 @@ namespace DarvinApp.DataAccess.JSON
     public class JsonAnimalRepository : IAnimalRepository
     {
         private readonly JavaScriptSerializer _serializer;
-        public string FileName { get; set; }
+        private readonly string _fileName;
 
-        public JsonAnimalRepository(String filename)
+        public JsonAnimalRepository(string filename)
         {
-            FileName = filename;
-            _serializer=new JavaScriptSerializer();
+            _fileName = filename;
+            _serializer = new JavaScriptSerializer();
         }
 
-        public void WriteNewAnimal(string name, AnimalType type)
+        public void WriteNewAnimal(Animal animal)
         {
             IList<Animal> animalsAlreadyThere = GetAnimalsArrayFromFile();
-            animalsAlreadyThere.Add(new Animal {Name = name, Type = type});
+            animalsAlreadyThere.Add(animal);
             WriteAnimalsArrayToFile(animalsAlreadyThere);
         }
 
@@ -32,10 +31,10 @@ namespace DarvinApp.DataAccess.JSON
 
         private IList<Animal> GetAnimalsArrayFromFile()
         {
-            using (Stream fileStream = new FileStream(FileName, FileMode.Open))
+            using (Stream fileStream = new FileStream(_fileName, FileMode.OpenOrCreate))
             {
                 var reader = new StreamReader(fileStream);
-                String jsonString = reader.ReadToEnd();
+                string jsonString = reader.ReadToEnd();
                 var animalList = _serializer.Deserialize<List<Animal>>(jsonString) ?? new List<Animal>();
                 return animalList;
             }
@@ -43,11 +42,11 @@ namespace DarvinApp.DataAccess.JSON
 
         private void WriteAnimalsArrayToFile(IList<Animal> animals)
         {
-            var writer = new StreamWriter(new FileStream(FileName,FileMode.Truncate));
-            String jsonString = _serializer.Serialize(animals);
-            writer.Write(jsonString);
-            writer.Flush();
-            writer.Close();
+            using (var writer = new StreamWriter(new FileStream(_fileName, FileMode.Truncate)))
+            {
+                string jsonString = _serializer.Serialize(animals);
+                writer.Write(jsonString);
+            }
         }
     }
 }

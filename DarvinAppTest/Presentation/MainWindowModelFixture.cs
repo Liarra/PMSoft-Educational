@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using DarvinApp.Business;
 using DarvinApp.Business.DataTypes;
 using DarvinApp.Business.Repository;
@@ -22,17 +21,17 @@ namespace DarvinAppTest.Presentation
         }
 
         [Test]
-        public void Constructor_NullExpert_ExpectedNullReferenceException()
+        public void Constructor_NullExpert_ExpectedArgumentNullException()
         {
-            Assert.Throws<NullReferenceException>(
+            Assert.Throws<ArgumentNullException>(
                 () =>
                 new MainWindowModel(Substitute.For<IQuestionRepository>(), Substitute.For<IAnimalRepository>(), null));
         }
 
         [Test]
-        public void Constructor_NullQuestionRepo_ExpectedNullReferenceException()
+        public void Constructor_NullQuestionRepo_ExpectedArgumentNullException()
         {
-            Assert.Throws<NullReferenceException>(
+            Assert.Throws<ArgumentNullException>(
                 () => new MainWindowModel(null, Substitute.For<IAnimalRepository>(), Substitute.For<IExpert>()));
         }
 
