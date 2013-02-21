@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Script.Serialization;
 using DarvinApp.Business.DataTypes;
@@ -19,12 +20,14 @@ namespace DarvinApp.DataAccess.JSON
 
         public void WriteNewAnimal(Animal animal)
         {
+            if(animal==null)
+                throw new ArgumentNullException("animal");
             IList<Animal> animalsAlreadyThere = GetAnimalsArrayFromFile();
             animalsAlreadyThere.Add(animal);
             WriteAnimalsArrayToFile(animalsAlreadyThere);
         }
 
-        public IList<Animal> GetAllAnimals()
+        public IEnumerable<Animal> GetAllAnimals()
         {
             return GetAnimalsArrayFromFile();
         }
@@ -42,6 +45,8 @@ namespace DarvinApp.DataAccess.JSON
 
         private void WriteAnimalsArrayToFile(IList<Animal> animals)
         {
+            if(animals==null)
+                throw new ArgumentNullException("animals");
             using (var writer = new StreamWriter(new FileStream(_fileName, FileMode.Truncate)))
             {
                 string jsonString = _serializer.Serialize(animals);

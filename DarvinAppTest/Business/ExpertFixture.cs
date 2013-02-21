@@ -118,18 +118,18 @@ namespace DarvinAppTest.Business
                 };
 
             var questionToAnswer2 = new Question(Arg.Any<string>())
-            {
-                TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
+                {
+                    TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
                         {
                             type2,
                         },
-                TypesLosingScoreFromPositiveAnswer = new List<AnimalType>
+                    TypesLosingScoreFromPositiveAnswer = new List<AnimalType>
                         {
                             type1
                         }
-            };
+                };
 
-            expertToTest.SubmitAnswer(questionToAnswer1,true);
+            expertToTest.SubmitAnswer(questionToAnswer1, true);
             expertToTest.SubmitAnswer(questionToAnswer2, true);
             Assert.AreEqual(AnimalType.Others, expertToTest.Decision());
         }
@@ -141,12 +141,12 @@ namespace DarvinAppTest.Business
         {
             var expertToTest = new Expert();
             var questionToAnswer = new Question(Arg.Any<string>())
-            {
-                TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
+                {
+                    TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
                         {
                             type
                         }
-            };
+                };
 
             expertToTest.SubmitAnswer(questionToAnswer, true);
             return expertToTest.DecisionString();

@@ -13,25 +13,18 @@ namespace DarvinApp.Presentation
     public class MainWindowModel : ViewModelBase
     {
         private int _questionListIndex;
-        public IList<Question> AvailableQuestions { get; set; }
-
-        public IExpert Expert { get; set; }
+        private readonly IExpert _expert;
+        private readonly NamingDialog _namingDialog;
+        private readonly IAnimalRepository _animalRepository;
 
         private ICommand _yesButtonPushed;
         private ICommand _noButtonPushed;
-        private NamingDialog _namingDialog;
 
-        private readonly IAnimalRepository _animalRepository;
+        public IList<Question> AvailableQuestions { get; set; }
 
         public Question CurrentQuestion
         {
             get { return AvailableQuestions[_questionListIndex]; }
-        }
-
-        public NamingDialog NamingDialog
-        {
-            get { return _namingDialog ?? (_namingDialog = new NamingDialog()); }
-            set { _namingDialog = value; }
         }
 
         public MainWindowModel(IQuestionRepository questionsSource, IAnimalRepository animalSavingDestination,
@@ -45,9 +38,11 @@ namespace DarvinApp.Presentation
                 throw new ArgumentNullException("expert");
 
             _questionListIndex = 0;
-            Expert = expert;
+            _expert = expert;
             _animalRepository = animalSavingDestination;
             AvailableQuestions = questionsSource.GetAllQuestions();
+
+            _namingDialog = new NamingDialog();
         }
 
         public ICommand YesButtonPushed
@@ -58,7 +53,7 @@ namespace DarvinApp.Presentation
                        (_yesButtonPushed = new RelayCommand(() =>
                            {
                                if (AvailableQuestions.Count == 0) return;
-                               Expert.SubmitAnswer(CurrentQuestion, true);
+                               _expert.SubmitAnswer(CurrentQuestion, true);
                                SelectNextQuestion();
                            }));
             }
@@ -71,7 +66,7 @@ namespace DarvinApp.Presentation
                 return _noButtonPushed ?? (_noButtonPushed = new RelayCommand(() =>
                     {
                         if (AvailableQuestions.Count == 0) return;
-                        Expert.SubmitAnswer(CurrentQuestion, false);
+                        _expert.SubmitAnswer(CurrentQuestion, false);
                         SelectNextQuestion();
                     }));
             }
@@ -80,7 +75,7 @@ namespace DarvinApp.Presentation
 
         private void SelectNextQuestion()
         {
-            if (Expert.ReadyToDecide())
+            if (_expert.ReadyToDecide())
             {
                 ShowResultDialog();
                 return;
@@ -97,19 +92,19 @@ namespace DarvinApp.Presentation
 
         private void ShowResultDialog()
         {
-            NamingDialog.TypeLabel.Content = Expert.DecisionString();
-            NamingDialog.Closed += (sender, e) => Application.Current.Shutdown(0);
+            _namingDialog.TypeLabel.Content = _expert.DecisionString();
+            _namingDialog.Closed += (sender, e) => Application.Current.Shutdown(0);
 
-            NamingDialog.SaveAnimalButton.Command = new RelayCommand(() =>
+            _namingDialog.SaveAnimalButton.Command = new RelayCommand(() =>
                 {
-                    AnimalType animalType = Expert.Decision();
-                    string animalName = NamingDialog.AnimalNameBox.Text;
+                    AnimalType animalType = _expert.Decision();
+                    string animalName = _namingDialog.AnimalNameBox.Text;
 
                     _animalRepository.WriteNewAnimal(new Animal {Name = animalName,Type = animalType});
                     MessageBox.Show("Животное сохранено");
                     Application.Current.Shutdown(0);
                 });
-            NamingDialog.ShowDialog();
+            _namingDialog.ShowDialog();
         }
     }
 }

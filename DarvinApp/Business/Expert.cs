@@ -65,7 +65,7 @@ namespace DarvinApp.Business
         {
             if(!ReadyToDecide())return AnimalType.Others;
             int maxScoreInTable = 0;
-            AnimalType currentWinner=AnimalType.Others;
+            var currentWinner=AnimalType.Others;
 
             foreach (KeyValuePair<AnimalType, int> record in _scoretable)
                 if (record.Value > maxScoreInTable)
@@ -99,6 +99,9 @@ namespace DarvinApp.Business
         public void SubmitAnswer(Question questionAnswered, bool answer)
         {
             if(!answer)return;
+
+            if(questionAnswered==null)
+                throw new ArgumentNullException("questionAnswered");
             foreach (AnimalType questionPromotedAnimalType in questionAnswered.TypesGettingScoreFromPositiveAnswer)
                 _scoretable[questionPromotedAnimalType]++;
 
