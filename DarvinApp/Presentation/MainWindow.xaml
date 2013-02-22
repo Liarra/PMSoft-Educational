@@ -1,14 +1,18 @@
 ﻿<Window x:Class="DarvinApp.Presentation.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="336.773" Width="453.779">
-    <Grid>
-        <Button Content="Нет" HorizontalAlignment="Left" Height="26" Margin="392,271,0,0" VerticalAlignment="Top"
+        Title="MainWindow" Height="174.773" Width="287.779"
+        MinHeight="150" MinWidth="200">
+    <DockPanel>
+        <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"
+                   Text="{Binding CurrentQuestion.Text}" VerticalAlignment="Top" DockPanel.Dock="Top" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+        <Button Content="Нет" HorizontalAlignment="Left" Height="26" Margin="10" VerticalAlignment="Top"
                 Width="44" Command="{Binding NoButtonPushed}" />
-        <Button Content="Да" HorizontalAlignment="Left" Height="26" Margin="346,271,0,0" VerticalAlignment="Top"
+        <Button Content="Да" HorizontalAlignment="Left" Height="26" Margin="10" VerticalAlignment="Top"
                 Width="41" Command="{Binding YesButtonPushed}" />
-        <TextBlock HorizontalAlignment="Left" Height="243" Margin="219,10,0,0" TextWrapping="Wrap"
-                   Text="{Binding CurrentQuestion.Text}" VerticalAlignment="Top" Width="217" />
+    </StackPanel>
+    
 
-    </Grid>
+    </DockPanel>
 </Window>
