@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Resources;
+using System.Windows;
 using DarvinApp.Business;
 using DarvinApp.DataAccess.Hardcode;
 using DarvinApp.DataAccess.JSON;
@@ -16,9 +17,10 @@ namespace DarvinApp
                 {
                     DataContext =
                         new MainWindowModel(new HardcodeQuestionRepository(),
-                                            new JsonAnimalRepository("AnimalTypes.txt"), new Expert())
+                                            new JsonAnimalRepository("AnimalTypes.txt"), new Expert(),
+                                            new ResourceManager(typeof (AnimalTypeReadableNames_RU)))
                 };
-
+            window.Closed += (u, source) => Current.Shutdown(0);
             window.Show();
         }
     }

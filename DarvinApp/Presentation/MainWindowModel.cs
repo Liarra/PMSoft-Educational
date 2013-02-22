@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Resources;
 using System.Windows;
 using System.Windows.Input;
 using DarvinApp.Business;
@@ -16,19 +18,19 @@ namespace DarvinApp.Presentation
         private readonly IExpert _expert;
         private readonly NamingDialog _namingDialog;
         private readonly IAnimalRepository _animalRepository;
+        private readonly ResourceManager _animalTypeNames;
+        private readonly IList<Question> _availableQuestions;
 
         private ICommand _yesButtonPushed;
         private ICommand _noButtonPushed;
 
-        public IList<Question> AvailableQuestions { get; set; }
-
         public Question CurrentQuestion
         {
-            get { return AvailableQuestions[_questionListIndex]; }
+            get { return _availableQuestions[_questionListIndex]; }
         }
 
         public MainWindowModel(IQuestionRepository questionsSource, IAnimalRepository animalSavingDestination,
-                               IExpert expert)
+                               IExpert expert, ResourceManager animalTypeNames)
         {
             if (questionsSource == null)
                 throw new ArgumentNullException("questionsSource");
@@ -36,13 +38,23 @@ namespace DarvinApp.Presentation
                 throw new ArgumentNullException("animalSavingDestination");
             if (expert == null)
                 throw new ArgumentNullException("expert");
-
+            if (animalTypeNames==null)
+                throw new ArgumentNullException("animalTypeNames");
+            if(!animalTypeDictionaryContainsAllSupportedTypes(expert,animalTypeNames))
+                throw new ArgumentException("One or more animal types supported by the expert missing in resourse");
             _questionListIndex = 0;
             _expert = expert;
             _animalRepository = animalSavingDestination;
-            AvailableQuestions = questionsSource.GetAllQuestions();
+            _animalTypeNames = animalTypeNames;
+            _availableQuestions = questionsSource.GetAllQuestions();
 
             _namingDialog = new NamingDialog();
+        }
+
+        private bool animalTypeDictionaryContainsAllSupportedTypes(IExpert expert, ResourceManager animalTypeNames)
+        {
+            IList<AnimalType> types = expert.SupportedTypes;
+            return types.All(t => animalTypeNames.GetObject(t.ToString()) != null);
         }
 
         public ICommand YesButtonPushed
@@ -52,7 +64,7 @@ namespace DarvinApp.Presentation
                 return _yesButtonPushed ??
                        (_yesButtonPushed = new RelayCommand(() =>
                            {
-                               if (AvailableQuestions.Count == 0) return;
+                               if (_availableQuestions.Count == 0) return;
                                _expert.SubmitAnswer(CurrentQuestion, true);
                                SelectNextQuestion();
                            }));
@@ -65,7 +77,7 @@ namespace DarvinApp.Presentation
             {
                 return _noButtonPushed ?? (_noButtonPushed = new RelayCommand(() =>
                     {
-                        if (AvailableQuestions.Count == 0) return;
+                        if (_availableQuestions.Count == 0) return;
                         _expert.SubmitAnswer(CurrentQuestion, false);
                         SelectNextQuestion();
                     }));
@@ -81,7 +93,7 @@ namespace DarvinApp.Presentation
                 return;
             }
 
-            if (_questionListIndex == AvailableQuestions.Count - 1)
+            if (_questionListIndex == _availableQuestions.Count - 1)
             {
                 ShowResultDialog();
                 return;
@@ -92,18 +104,19 @@ namespace DarvinApp.Presentation
 
         private void ShowResultDialog()
         {
-            _namingDialog.TypeLabel.Content = _expert.DecisionString();
-            _namingDialog.Closed += (sender, e) => Application.Current.Shutdown(0);
+            var animalType = _expert.Decision();
+            var animalTypeName = _animalTypeNames.GetString(animalType.ToString());
 
+            _namingDialog.TypeLabel.Content = animalTypeName;
+            _namingDialog.Closed += (sender, e) => Application.Current.Shutdown(0);
             _namingDialog.SaveAnimalButton.Command = new RelayCommand(() =>
                 {
-                    AnimalType animalType = _expert.Decision();
-                    string animalName = _namingDialog.AnimalNameBox.Text;
-
-                    _animalRepository.WriteNewAnimal(new Animal {Name = animalName,Type = animalType});
+                    var animalName = _namingDialog.AnimalNameBox.Text;
+                    _animalRepository.WriteNewAnimal(new Animal {Name = animalName, Type = animalType});
                     MessageBox.Show("Животное сохранено");
                     Application.Current.Shutdown(0);
                 });
+
             _namingDialog.ShowDialog();
         }
     }
