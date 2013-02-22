@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
 using DarvinApp.Business.DataTypes;
 
 namespace DarvinApp.Business
@@ -63,9 +61,9 @@ namespace DarvinApp.Business
 
         public AnimalType Decision()
         {
-            if(!ReadyToDecide())return AnimalType.Others;
+            if (!ReadyToDecide()) return AnimalType.Others;
             int maxScoreInTable = 0;
-            var currentWinner=AnimalType.Others;
+            var currentWinner = AnimalType.Others;
 
             foreach (KeyValuePair<AnimalType, int> record in _scoretable)
                 if (record.Value > maxScoreInTable)
@@ -76,31 +74,11 @@ namespace DarvinApp.Business
             return currentWinner;
         }
 
-        public String DecisionString()
-        {
-            AnimalType animalType = Decision();
-            Type type = typeof(AnimalType);
-
-            MemberInfo[] memInfo = type.GetMember(animalType.ToString());
-
-            if (memInfo.Length > 0)
-            {
-                object[] attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-                if (attrs.Length > 0)
-                {
-                    return ((DescriptionAttribute)attrs[0]).Description;
-                }
-            }
-
-            return animalType.ToString();
-        }
-
         public void SubmitAnswer(Question questionAnswered, bool answer)
         {
-            if(!answer)return;
+            if (!answer) return;
 
-            if(questionAnswered==null)
+            if (questionAnswered == null)
                 throw new ArgumentNullException("questionAnswered");
             foreach (AnimalType questionPromotedAnimalType in questionAnswered.TypesGettingScoreFromPositiveAnswer)
                 _scoretable[questionPromotedAnimalType]++;

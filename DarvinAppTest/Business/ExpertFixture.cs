@@ -45,7 +45,7 @@ namespace DarvinAppTest.Business
         {
             var expertToTest = new Expert();
             for (int i = 0; i < 5; i++)
-                expertToTest.SubmitAnswer(Arg.Any<Question>(), Arg.Any<bool>());
+                expertToTest.SubmitAnswer(Substitute.For<Question>("123"), Arg.Any<bool>());
             var decicion = expertToTest.Decision();
             Assert.IsNotNull(decicion);
             Assert.IsInstanceOf<AnimalType>(decicion);
@@ -62,7 +62,7 @@ namespace DarvinAppTest.Business
         public void Decision_OneSingleTypedQuestionAnswer_ExpectedRighType(AnimalType type)
         {
             var expertToTest = new Expert();
-            var questionToAnswer = new Question(Arg.Any<string>())
+            var questionToAnswer = new Question("123")
                 {
                     TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
                         {
@@ -85,7 +85,7 @@ namespace DarvinAppTest.Business
         public void Decision_OneMultiTypedQuestionAnswer_ExpectedOther(AnimalType type1, AnimalType type2)
         {
             var expertToTest = new Expert();
-            var questionToAnswer = new Question(Arg.Any<string>())
+            var questionToAnswer = new Question("123")
                 {
                     TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
                         {
@@ -105,7 +105,7 @@ namespace DarvinAppTest.Business
             var type1 = Arg.Any<AnimalType>();
             var type2 = Arg.Any<AnimalType>();
 
-            var questionToAnswer1 = new Question(Arg.Any<string>())
+            var questionToAnswer1 = new Question("123")
                 {
                     TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
                         {
@@ -117,7 +117,7 @@ namespace DarvinAppTest.Business
                         }
                 };
 
-            var questionToAnswer2 = new Question(Arg.Any<string>())
+            var questionToAnswer2 = new Question("123")
                 {
                     TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
                         {
@@ -132,24 +132,6 @@ namespace DarvinAppTest.Business
             expertToTest.SubmitAnswer(questionToAnswer1, true);
             expertToTest.SubmitAnswer(questionToAnswer2, true);
             Assert.AreEqual(AnimalType.Others, expertToTest.Decision());
-        }
-
-        [TestCase(AnimalType.FlowerVaseBreakers, Result = "разбившие цветочную вазу")]
-        [TestCase(AnimalType.Emperors, Result = "принадлежащие Императору")]
-        [TestCase(AnimalType.LookingLikeFlies, Result = "похожие издали на мух")]
-        public string DesicionString_OneSingleAnswer_ExpectedRightTypeName(AnimalType type)
-        {
-            var expertToTest = new Expert();
-            var questionToAnswer = new Question(Arg.Any<string>())
-                {
-                    TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
-                        {
-                            type
-                        }
-                };
-
-            expertToTest.SubmitAnswer(questionToAnswer, true);
-            return expertToTest.DecisionString();
         }
     }
 }
