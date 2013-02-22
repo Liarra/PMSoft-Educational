@@ -7,6 +7,9 @@ namespace DarvinApp.Business.DataTypes
         private readonly string _name;
         private readonly AnimalType _animalType;
 
+        public Animal()
+        {
+        }
 
         public Animal(string name, AnimalType animalType)
         {
@@ -44,6 +47,7 @@ namespace DarvinApp.Business.DataTypes
         {
             unchecked
             {
+                //Ensure that we'll never get hashCode^0=1
                 return (_name.GetHashCode() * 397) ^ ((int)(_animalType) + 1);
             }
         }

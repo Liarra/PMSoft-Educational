@@ -38,7 +38,7 @@ namespace DarvinApp.DataAccess.JSON
             {
                 var reader = new StreamReader(fileStream);
                 string jsonString = reader.ReadToEnd();
-                var animalList = _serializer.Deserialize<List<Animal>>(jsonString) ?? new List<Animal>();
+                var animalList = _serializer.Deserialize<List<Animal>>(jsonString) ?? new List<Animal>{};
                 return animalList;
             }
         }

@@ -9,8 +9,8 @@ namespace DarvinAppTest.Business.DataTypes
         [Test]
         public void Equals_OnlyEqualNames_ExpectedFalse()
         {
-            var a1 = new Animal {Name = "Name", Type = AnimalType.Piglets};
-            var a2 = new Animal {Name = "Name", Type = AnimalType.Others};
+            var a1 = new Animal ("Name",AnimalType.Piglets);
+            var a2 = new Animal ("Name",AnimalType.Others);
 
             Assert.False(a1.Equals(a2));
         }

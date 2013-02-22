@@ -100,6 +100,7 @@
       <DependentUpon>NamingDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\MainWindowModel.cs" />
+    <Compile Include="Presentation\NamingDialogModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

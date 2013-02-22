@@ -9,6 +9,7 @@ using DarvinApp.Business.DataTypes;
 using DarvinApp.Business.Repository;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace DarvinApp.Presentation
 {
@@ -16,10 +17,8 @@ namespace DarvinApp.Presentation
     {
         private int _questionListIndex;
         private readonly IExpert _expert;
-        private readonly NamingDialog _namingDialog;
-        private readonly IAnimalRepository _animalRepository;
-        private readonly ResourceManager _animalTypeNames;
         private readonly IList<Question> _availableQuestions;
+        private readonly object _token;
 
         private ICommand _yesButtonPushed;
         private ICommand _noButtonPushed;
@@ -29,26 +28,20 @@ namespace DarvinApp.Presentation
             get { return _availableQuestions[_questionListIndex]; }
         }
 
-        public MainWindowModel(IQuestionRepository questionsSource, IAnimalRepository animalSavingDestination,
-                               IExpert expert, ResourceManager animalTypeNames)
+        public MainWindowModel(IQuestionRepository questionsSource, 
+                               IExpert expert, object messagingToken)
         {
             if (questionsSource == null)
                 throw new ArgumentNullException("questionsSource");
-            if (animalSavingDestination == null)
-                throw new ArgumentNullException("animalSavingDestination");
+           
             if (expert == null)
                 throw new ArgumentNullException("expert");
-            if (animalTypeNames==null)
-                throw new ArgumentNullException("animalTypeNames");
-            if(!animalTypeDictionaryContainsAllSupportedTypes(expert,animalTypeNames))
-                throw new ArgumentException("One or more animal types supported by the expert missing in resourse");
+             
             _questionListIndex = 0;
             _expert = expert;
-            _animalRepository = animalSavingDestination;
-            _animalTypeNames = animalTypeNames;
             _availableQuestions = questionsSource.GetAllQuestions();
 
-            _namingDialog = new NamingDialog();
+            _token = messagingToken;
         }
 
         private bool animalTypeDictionaryContainsAllSupportedTypes(IExpert expert, ResourceManager animalTypeNames)
@@ -103,21 +96,10 @@ namespace DarvinApp.Presentation
         }
 
         private void ShowResultDialog()
-        {
-            var animalType = _expert.Decision();
-            var animalTypeName = _animalTypeNames.GetString(animalType.ToString());
-
-            _namingDialog.TypeLabel.Content = animalTypeName;
-            _namingDialog.Closed += (sender, e) => Application.Current.Shutdown(0);
-            _namingDialog.SaveAnimalButton.Command = new RelayCommand(() =>
-                {
-                    var animalName = _namingDialog.AnimalNameBox.Text;
-                    _animalRepository.WriteNewAnimal(new Animal {Name = animalName, Type = animalType});
-                    MessageBox.Show("Животное сохранено");
-                    Application.Current.Shutdown(0);
-                });
-
-            _namingDialog.ShowDialog();
+        {      
+            var animalType = _expert.Decision(); 
+            Messenger.Default.Send(new NotificationMessage(animalType.ToString()),_token);
+            Messenger.Default.Send(new NotificationMessage("ShowDialog"));
         }
     }
 }

@@ -13,15 +13,26 @@ namespace DarvinApp
         {
             base.OnStartup(e);
 
+            const int namingCallToken = 42;
             var window = new MainWindow
                 {
                     DataContext =
-                        new MainWindowModel(new HardcodeQuestionRepository(),
-                                            new JsonAnimalRepository("AnimalTypes.txt"), new Expert(),
-                                            new ResourceManager(typeof (AnimalTypeReadableNames_RU)))
+                        new MainWindowModel(
+                            new HardcodeQuestionRepository(),
+                            new Expert(), namingCallToken
+                            )
                 };
+
             window.Closed += (u, source) => Current.Shutdown(0);
             window.Show();
+
+            var namingDialog = new NamingDialog(namingCallToken)
+                {
+                    DataContext =
+                        new NamingDialogModel(new JsonAnimalRepository("AnimalTypes.txt"), namingCallToken,
+                                              new ResourceManager(typeof (AnimalTypeReadableNames_RU)))
+                };
+            namingDialog.Closed += (sender, u) => Current.Shutdown(0);
         }
     }
 }
