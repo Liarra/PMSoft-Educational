@@ -6,6 +6,6 @@ namespace DarvinApp.Business.Repository
     public interface IAnimalRepository
     {
         void WriteNewAnimal(Animal animal);
-        IList<Animal> GetAllAnimals();
+        IEnumerable<Animal> GetAllAnimals();
     }
 }
