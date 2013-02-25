@@ -45,8 +45,6 @@ namespace DarvinApp.DataAccess.JSON
 
         private void WriteAnimalsArrayToFile(IList<Animal> animals)
         {
-            if (animals == null)
-                throw new ArgumentNullException("animals");
             using (var writer = new StreamWriter(new FileStream(_fileName, FileMode.Truncate)))
             {
                 string jsonString = _serializer.Serialize(animals);

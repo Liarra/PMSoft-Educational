@@ -26,7 +26,7 @@ namespace DarvinApp
             window.Closed += (u, source) => Current.Shutdown(0);
             window.Show();
 
-            var namingDialog = new NamingDialog()
+            var namingDialog = new NamingDialog
                 {
                     DataContext =
                         new NamingDialogModel(new JsonAnimalRepository("AnimalTypes.txt"), namingCallToken,

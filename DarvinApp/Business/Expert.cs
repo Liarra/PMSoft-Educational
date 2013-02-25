@@ -76,14 +76,14 @@ namespace DarvinApp.Business
 
         public void SubmitAnswer(Question questionAnswered, bool answer)
         {
-            if (!answer) return;
 
             if (questionAnswered == null)
                 throw new ArgumentNullException("questionAnswered");
-            foreach (AnimalType questionPromotedAnimalType in questionAnswered.TypesGettingScoreFromPositiveAnswer)
+            if (!answer) return;
+            foreach (var questionPromotedAnimalType in questionAnswered.TypesGettingScoreFromPositiveAnswer)
                 _scoretable[questionPromotedAnimalType]++;
 
-            foreach (AnimalType questionReducedAnimalType in questionAnswered.TypesLosingScoreFromPositiveAnswer)
+            foreach (var questionReducedAnimalType in questionAnswered.TypesLosingScoreFromPositiveAnswer)
                 _scoretable[questionReducedAnimalType]--;
         }
     }
