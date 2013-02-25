@@ -47,10 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\DataTypes\AnimalFixture.cs" />
+    <Compile Include="Business\DataTypes\QuestionFixture.cs" />
     <Compile Include="Business\ExpertFixture.cs" />
     <Compile Include="DataAccess\Hardcode\HardcodeQuestionRepositoryFixture.cs" />
     <Compile Include="DataAccess\JSON\JsonAnimalRepositoryFixture.cs" />
+    <Compile Include="DataAccess\Stub\StubQuestionRepository.cs" />
     <Compile Include="Presentation\MainWindowModelFixture.cs" />
+    <Compile Include="Presentation\NamingDialogModelFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

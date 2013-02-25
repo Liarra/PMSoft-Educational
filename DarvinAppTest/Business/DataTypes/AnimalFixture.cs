@@ -9,8 +9,8 @@ namespace DarvinAppTest.Business.DataTypes
         [Test]
         public void Equals_OnlyEqualNames_ExpectedFalse()
         {
-            var a1 = new Animal ("Name",AnimalType.Piglets);
-            var a2 = new Animal ("Name",AnimalType.Others);
+            var a1 = new Animal {Name="Name",Type = AnimalType.Piglets};
+            var a2 = new Animal { Name = "Name", Type = AnimalType.Others };
 
             Assert.False(a1.Equals(a2));
         }
@@ -31,6 +31,15 @@ namespace DarvinAppTest.Business.DataTypes
             var a2 = new Animal {Name = "Name1", Type = AnimalType.Piglets};
 
             Assert.True(a1.Equals(a2));
+        }
+
+        [Test]
+        public void GetHashCode_SameThingsGetSameCode()
+        {
+            var a1 = new Animal { Name = "Name1", Type = AnimalType.Piglets };
+            var a2 = new Animal { Name = "Name1", Type = AnimalType.Piglets };
+
+            Assert.AreEqual(a1.GetHashCode(),a2.GetHashCode());
         }
     }
 }

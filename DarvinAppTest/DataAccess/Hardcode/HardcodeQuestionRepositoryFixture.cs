@@ -12,7 +12,7 @@ namespace DarvinAppTest.DataAccess.Hardcode
        {
            var victim=new HardcodeQuestionRepository();
 
-           IList<Question> resultList = victim.GetAllQuestions();
+           IEnumerable<Question> resultList = victim.GetAllQuestions();
            Assert.NotNull(resultList);
            Assert.IsNotEmpty(resultList);
        }

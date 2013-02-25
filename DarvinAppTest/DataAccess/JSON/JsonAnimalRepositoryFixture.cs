@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DarvinApp.Business.DataTypes;
@@ -71,6 +72,14 @@ namespace DarvinAppTest.DataAccess.JSON
 
             // Assert
             Assert.AreEqual(animals.Count(), n + 1);
+        }
+
+        [Test]
+        public void WriteNewAnimal_NullAnimal_ExpectedANE()
+        {
+            var repository = new JsonAnimalRepository(TestFileName);
+            // Act
+            Assert.Throws<ArgumentNullException>(()=>repository.WriteNewAnimal(null));
         }
 
         private void WriteNRecordsToFile(string filename, int records)

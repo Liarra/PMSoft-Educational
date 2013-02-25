@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DarvinApp.Business;
 using DarvinApp.Business.DataTypes;
 using NSubstitute;
@@ -26,7 +27,7 @@ namespace DarvinAppTest.Business
             var expertToTest = new Expert();
 
             for (int i = 0; i < numberOfQuestions; i++)
-                expertToTest.SubmitAnswer(Arg.Any<Question>(), false);
+                expertToTest.SubmitAnswer(Substitute.For<Question>("123"), false);
 
             bool actualReadyToDecide = expertToTest.ReadyToDecide();
             Assert.False(actualReadyToDecide);
@@ -132,6 +133,14 @@ namespace DarvinAppTest.Business
             expertToTest.SubmitAnswer(questionToAnswer1, true);
             expertToTest.SubmitAnswer(questionToAnswer2, true);
             Assert.AreEqual(AnimalType.Others, expertToTest.Decision());
+        }
+
+        [Test]
+        public void SubmitAnswer_NullQuestion_ExpectedANE()
+        {
+            var expertToTest = new Expert();
+            
+            Assert.Throws<ArgumentNullException>(()=>expertToTest.SubmitAnswer(null,true));
         }
     }
 }
