@@ -5,6 +5,6 @@ namespace DarvinApp.Business.Repository
 {
     public interface IQuestionRepository
     {
-        IList<Question> GetAllQuestions();
+        IEnumerable<Question> GetAllQuestions();
     }
 }

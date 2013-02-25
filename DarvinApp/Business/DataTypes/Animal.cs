@@ -1,34 +1,10 @@
-﻿using System;
-
-namespace DarvinApp.Business.DataTypes
+﻿namespace DarvinApp.Business.DataTypes
 {
     public class Animal
     {
-        private readonly string _name;
-        private readonly AnimalType _animalType;
+        public string Name { get; set; }
 
-        public Animal()
-        {
-        }
-
-        public Animal(string name, AnimalType animalType)
-        {
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            _name = name;
-            _animalType = animalType;
-        }
-
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public AnimalType Type
-        {
-            get { return _animalType; }
-        }
+        public AnimalType Type { get; set; }
 
         public override bool Equals(object o)
         {
@@ -38,17 +14,17 @@ namespace DarvinApp.Business.DataTypes
             return Equals((Animal) o);
         }
 
+
         protected bool Equals(Animal other)
         {
-            return string.Equals(_name, other._name) && _animalType == other._animalType;
+            return string.Equals(Name, other.Name) && Type == other.Type;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                //Ensure that we'll never get hashCode^0=1
-                return (_name.GetHashCode() * 397) ^ ((int)(_animalType) + 1);
+                return ((Name != null ? Name.GetHashCode() : 0)*397) ^ ((int) Type + 1);
             }
         }
     }

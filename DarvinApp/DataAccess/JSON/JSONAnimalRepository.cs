@@ -20,7 +20,7 @@ namespace DarvinApp.DataAccess.JSON
 
         public void WriteNewAnimal(Animal animal)
         {
-            if(animal==null)
+            if (animal == null)
                 throw new ArgumentNullException("animal");
             IList<Animal> animalsAlreadyThere = GetAnimalsArrayFromFile();
             animalsAlreadyThere.Add(animal);
@@ -38,14 +38,14 @@ namespace DarvinApp.DataAccess.JSON
             {
                 var reader = new StreamReader(fileStream);
                 string jsonString = reader.ReadToEnd();
-                var animalList = _serializer.Deserialize<List<Animal>>(jsonString) ?? new List<Animal>{};
+                var animalList = _serializer.Deserialize<List<Animal>>(jsonString) ?? new List<Animal>();
                 return animalList;
             }
         }
 
         private void WriteAnimalsArrayToFile(IList<Animal> animals)
         {
-            if(animals==null)
+            if (animals == null)
                 throw new ArgumentNullException("animals");
             using (var writer = new StreamWriter(new FileStream(_fileName, FileMode.Truncate)))
             {

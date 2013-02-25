@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
-using System.Windows;
 using System.Windows.Input;
 using DarvinApp.Business;
 using DarvinApp.Business.DataTypes;
@@ -17,7 +15,7 @@ namespace DarvinApp.Presentation
     {
         private int _questionListIndex;
         private readonly IExpert _expert;
-        private readonly IList<Question> _availableQuestions;
+        private readonly IEnumerable<Question> _availableQuestions;
         private readonly object _token;
 
         private ICommand _yesButtonPushed;
@@ -25,29 +23,22 @@ namespace DarvinApp.Presentation
 
         public Question CurrentQuestion
         {
-            get { return _availableQuestions[_questionListIndex]; }
+            get { return _availableQuestions.ElementAt(_questionListIndex); }
         }
 
-        public MainWindowModel(IQuestionRepository questionsSource, 
+        public MainWindowModel(IQuestionRepository questionsSource,
                                IExpert expert, object messagingToken)
         {
             if (questionsSource == null)
                 throw new ArgumentNullException("questionsSource");
-           
+
             if (expert == null)
                 throw new ArgumentNullException("expert");
-             
+
             _questionListIndex = 0;
             _expert = expert;
             _availableQuestions = questionsSource.GetAllQuestions();
-
             _token = messagingToken;
-        }
-
-        private bool animalTypeDictionaryContainsAllSupportedTypes(IExpert expert, ResourceManager animalTypeNames)
-        {
-            IList<AnimalType> types = expert.SupportedTypes;
-            return types.All(t => animalTypeNames.GetObject(t.ToString()) != null);
         }
 
         public ICommand YesButtonPushed
@@ -57,7 +48,7 @@ namespace DarvinApp.Presentation
                 return _yesButtonPushed ??
                        (_yesButtonPushed = new RelayCommand(() =>
                            {
-                               if (_availableQuestions.Count == 0) return;
+                               if (!_availableQuestions.Any()) return;
                                _expert.SubmitAnswer(CurrentQuestion, true);
                                SelectNextQuestion();
                            }));
@@ -70,7 +61,7 @@ namespace DarvinApp.Presentation
             {
                 return _noButtonPushed ?? (_noButtonPushed = new RelayCommand(() =>
                     {
-                        if (_availableQuestions.Count == 0) return;
+                        if (!_availableQuestions.Any()) return;
                         _expert.SubmitAnswer(CurrentQuestion, false);
                         SelectNextQuestion();
                     }));
@@ -86,7 +77,7 @@ namespace DarvinApp.Presentation
                 return;
             }
 
-            if (_questionListIndex == _availableQuestions.Count - 1)
+            if (_questionListIndex == _availableQuestions.Count() - 1)
             {
                 ShowResultDialog();
                 return;
@@ -96,9 +87,9 @@ namespace DarvinApp.Presentation
         }
 
         private void ShowResultDialog()
-        {      
-            var animalType = _expert.Decision(); 
-            Messenger.Default.Send(new NotificationMessage(animalType.ToString()),_token);
+        {
+            var animalType = _expert.Decision();
+            Messenger.Default.Send(new NotificationMessage(animalType.ToString()), _token);
             Messenger.Default.Send(new NotificationMessage("ShowDialog"));
         }
     }

@@ -6,7 +6,7 @@ namespace DarvinApp.DataAccess.Hardcode
 {
     public class HardcodeQuestionRepository : IQuestionRepository
     {
-        public IList<Question> GetAllQuestions()
+        public IEnumerable<Question> GetAllQuestions()
         {
             return new List<Question>
                 {
