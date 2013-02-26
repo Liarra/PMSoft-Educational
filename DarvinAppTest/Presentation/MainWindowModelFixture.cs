@@ -3,6 +3,7 @@ using DarvinApp.Business;
 using DarvinApp.Business.Repository;
 using DarvinApp.Presentation;
 using DarvinAppTest.DataAccess.Stub;
+using GalaSoft.MvvmLight.Messaging;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -24,14 +25,14 @@ namespace DarvinAppTest.Presentation
         {
             Assert.Throws<ArgumentNullException>(
                 () =>
-                new MainWindowModel(Substitute.For<IQuestionRepository>(), null, 42));
+                new MainWindowModel(Substitute.For<IQuestionRepository>(), null, 42, Substitute.For<Messenger>()));
         }
 
         [Test]
         public void Constructor_NullQuestionRepo_ExpectedArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new MainWindowModel(null, Substitute.For<IExpert>(), 42));
+                () => new MainWindowModel(null, Substitute.For<IExpert>(), 42, Substitute.For<Messenger>()));
         }
 
         [TestCase(5, 1)]
@@ -68,7 +69,7 @@ namespace DarvinAppTest.Presentation
         private MainWindowModel createModelWithStubParameters(int questions)
         {
             return new MainWindowModel(new StubQuestionRepository(questions),
-                                       Substitute.For<IExpert>(), 42);
+                                       Substitute.For<IExpert>(), 42, Substitute.For<Messenger>());
         }
 
         private void executeSomeOfTheseButtonActionsPlease(int which, MainWindowModel victim)

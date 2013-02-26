@@ -14,6 +14,9 @@ namespace DarvinApp.DataAccess.JSON
 
         public JsonAnimalRepository(string filename)
         {
+            if (filename == null)
+                throw  new ArgumentNullException("filename");
+
             _fileName = filename;
             _serializer = new JavaScriptSerializer();
         }

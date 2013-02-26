@@ -4,6 +4,7 @@ using DarvinApp.Business;
 using DarvinApp.DataAccess.Hardcode;
 using DarvinApp.DataAccess.JSON;
 using DarvinApp.Presentation;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace DarvinApp
 {
@@ -17,10 +18,7 @@ namespace DarvinApp
             var window = new MainWindow
                 {
                     DataContext =
-                        new MainWindowModel(
-                            new HardcodeQuestionRepository(),
-                            new Expert(), namingCallToken
-                            )
+                        new MainWindowModel(new HardcodeQuestionRepository(), new Expert(), namingCallToken, Messenger.Default)
                 };
 
             window.Closed += (u, source) => Current.Shutdown(0);
@@ -30,7 +28,7 @@ namespace DarvinApp
                 {
                     DataContext =
                         new NamingDialogModel(new JsonAnimalRepository("AnimalTypes.txt"), namingCallToken,
-                                              new ResourceManager(typeof (AnimalTypeReadableNames_RU)))
+                                              new ResourceManager(typeof (AnimalTypeReadableNames_RU)), Messenger.Default)
                 };
             namingDialog.Closed += (sender, u) => Current.Shutdown(0);
         }

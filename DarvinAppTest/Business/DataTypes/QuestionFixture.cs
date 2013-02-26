@@ -8,15 +8,15 @@ namespace DarvinAppTest.Business.DataTypes
     public class QuestionFixture
     {
         [Test]
-        public void Question_NullText_ExpectedANE()
+        public void Question_NullText_ExpectedArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => new Question(null));
         }
 
         [Test]
-        public void Question_EmptyTextText_ExpectedAE()
+        public void Question_EmptyText_ExpectedArgumentNullException()
         {
-            Assert.Throws<ArgumentException>(() => new Question(""));
+            Assert.Throws<ArgumentNullException>(() => new Question(""));
         }
 
         [TestCase("String")]
@@ -24,8 +24,6 @@ namespace DarvinAppTest.Business.DataTypes
         [TestCase("StringStringStringStringStringStringStringStringStringStringStringStringStringStringStringString")]
         public void Question_NonEmptyTextText_ExpectedNoException(string text)
         {
-            if (string.IsNullOrEmpty(text))
-                throw new ArgumentException("Should provide correct string", text);
             Assert.DoesNotThrow(() => new Question(text));
         }
 
@@ -34,8 +32,6 @@ namespace DarvinAppTest.Business.DataTypes
         [TestCase("StringStringStringStringStringStringStringStringStringStringStringStringStringStringStringString")]
         public void Question_RightString_ReturnsExactlyThatStringAsTextProperty(string text)
         {
-            if (string.IsNullOrEmpty(text))
-                throw new ArgumentException("Should provide correct string", text);
             var question=new Question(text);
             Assert.AreEqual(text,question.Text);
         }

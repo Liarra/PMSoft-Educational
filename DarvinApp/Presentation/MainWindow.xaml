@@ -6,13 +6,12 @@
     <DockPanel>
         <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"
                    Text="{Binding CurrentQuestion.Text}" VerticalAlignment="Top" DockPanel.Dock="Top" />
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
-        <Button Content="Нет" HorizontalAlignment="Left" Height="26" Margin="10" VerticalAlignment="Top"
-                Width="44" Command="{Binding NoButtonPushed}" />
-        <Button Content="Да" HorizontalAlignment="Left" Height="26" Margin="10" VerticalAlignment="Top"
-                Width="41" Command="{Binding YesButtonPushed}" />
-    </StackPanel>
-    
-
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    DockPanel.Dock="Bottom">
+            <Button Content="Нет" HorizontalAlignment="Left" Height="26" Margin="10" VerticalAlignment="Top"
+                    Width="44" Command="{Binding NoButtonPushed}" />
+            <Button Content="Да" HorizontalAlignment="Left" Height="26" Margin="10" VerticalAlignment="Top"
+                    Width="41" Command="{Binding YesButtonPushed}" />
+        </StackPanel>
     </DockPanel>
 </Window>

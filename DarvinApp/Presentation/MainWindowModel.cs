@@ -20,6 +20,7 @@ namespace DarvinApp.Presentation
 
         private ICommand _yesButtonPushed;
         private ICommand _noButtonPushed;
+        private IMessenger _messenger;
 
         public Question CurrentQuestion
         {
@@ -27,7 +28,7 @@ namespace DarvinApp.Presentation
         }
 
         public MainWindowModel(IQuestionRepository questionsSource,
-                               IExpert expert, object messagingToken)
+                               IExpert expert, object messagingToken, IMessenger messenger)
         {
             if (questionsSource == null)
                 throw new ArgumentNullException("questionsSource");
@@ -35,10 +36,14 @@ namespace DarvinApp.Presentation
             if (expert == null)
                 throw new ArgumentNullException("expert");
 
+            if (messenger == null)
+                throw new ArgumentNullException("messenger");
+
             _questionListIndex = 0;
             _expert = expert;
             _availableQuestions = questionsSource.GetAllQuestions();
             _token = messagingToken;
+            _messenger = messenger;
         }
 
         public ICommand YesButtonPushed
@@ -89,8 +94,8 @@ namespace DarvinApp.Presentation
         private void ShowResultDialog()
         {
             var animalType = _expert.Decision();
-            Messenger.Default.Send(new NotificationMessage(animalType.ToString()), _token);
-            Messenger.Default.Send(new NotificationMessage("ShowDialog"));
+            _messenger.Send(new NotificationMessage(animalType.ToString()), _token);
+            _messenger.Send(new NotificationMessage("ShowDialog"));
         }
     }
 }

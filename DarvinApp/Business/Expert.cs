@@ -76,7 +76,6 @@ namespace DarvinApp.Business
 
         public void SubmitAnswer(Question questionAnswered, bool answer)
         {
-
             if (questionAnswered == null)
                 throw new ArgumentNullException("questionAnswered");
             if (!answer) return;
