@@ -53,6 +53,7 @@
     <Compile Include="DataAccess\JSON\JsonAnimalRepositoryFixture.cs" />
     <Compile Include="DataAccess\Stub\StubQuestionRepository.cs" />
     <Compile Include="Presentation\MainWindowModelFixture.cs" />
+    <Compile Include="Presentation\Mock\MessngerMock.cs" />
     <Compile Include="Presentation\NamingDialogModelFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

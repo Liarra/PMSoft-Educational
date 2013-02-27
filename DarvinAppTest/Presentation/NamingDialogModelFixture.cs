@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Resources;
-using System.Windows.Input;
 using DarvinApp.Business.DataTypes;
 using DarvinApp.Business.Repository;
 using DarvinApp.Presentation;
+using DarvinAppTest.Presentation.Mock;
 using GalaSoft.MvvmLight.Messaging;
 using NSubstitute;
 using NUnit.Framework;
@@ -53,27 +53,16 @@ namespace DarvinAppTest.Presentation
         [Test]
         public void SaveAnimal_SendsMessage()
         {
-            //TODO: Insert a stub messenger here
+            var messengerMock = new MessengerMock();
             var victim = new NamingDialogModel(Substitute.For<IAnimalRepository>(), 42,
-                                               Substitute.For<ResourceManager>(), Messenger.Default);
-            ICommand cmd = victim.AnimalSavingCommand;
-            SetFlagMessageGot(false);
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+                                               Substitute.For<ResourceManager>(), messengerMock);
+            var cmd = victim.AnimalSavingCommand;
+            var expectedMessage = new NotificationMessage("NotifyAnimalSavedAndShutdownAlready");
+
             cmd.Execute(null);
-            Assert.True(_confirmMessageGot);
-        }
-
-        private void NotificationMessageReceived(NotificationMessage msg)
-        {
-            if (msg.Notification.Equals("NotifyAnimalSavedAndShutdownAlready"))
-                SetFlagMessageGot(true);
-        }
-
-        private bool _confirmMessageGot;
-
-        private void SetFlagMessageGot(bool toWhat)
-        {
-            _confirmMessageGot = toWhat;
+            var actualMessage = messengerMock.MessageGot as NotificationMessage;
+            Assert.NotNull(actualMessage);
+            Assert.AreEqual(expectedMessage.Notification, actualMessage.Notification);
         }
     }
 }

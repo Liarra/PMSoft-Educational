@@ -68,8 +68,7 @@ namespace DarvinApp.Presentation
 
         private void SaveAnimal()
         {
-            var animalName = AnimalName;
-            _animalRepository.WriteNewAnimal(new Animal {Name = animalName, Type = _animalType});
+            _animalRepository.WriteNewAnimal(new Animal {Name = AnimalName, Type = _animalType});
             _messenger.Send(new NotificationMessage("NotifyAnimalSavedAndShutdownAlready"));
         }
     }
