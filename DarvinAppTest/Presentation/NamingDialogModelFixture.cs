@@ -3,7 +3,6 @@ using System.Resources;
 using DarvinApp.Business.DataTypes;
 using DarvinApp.Business.Repository;
 using DarvinApp.Presentation;
-using DarvinAppTest.Presentation.Mock;
 using GalaSoft.MvvmLight.Messaging;
 using NSubstitute;
 using NUnit.Framework;
@@ -53,16 +52,14 @@ namespace DarvinAppTest.Presentation
         [Test]
         public void SaveAnimal_SendsMessage()
         {
-            var messengerMock = new MessengerMock();
+            var goodMessengerMock = Substitute.For<IMessenger>();
             var victim = new NamingDialogModel(Substitute.For<IAnimalRepository>(), 42,
-                                               Substitute.For<ResourceManager>(), messengerMock);
+                                               Substitute.For<ResourceManager>(), goodMessengerMock);
+
             var cmd = victim.AnimalSavingCommand;
-            var expectedMessage = new NotificationMessage("NotifyAnimalSavedAndShutdownAlready");
 
             cmd.Execute(null);
-            var actualMessage = messengerMock.MessageGot as NotificationMessage;
-            Assert.NotNull(actualMessage);
-            Assert.AreEqual(expectedMessage.Notification, actualMessage.Notification);
+            goodMessengerMock.Received(1).Send(Arg.Any<object>());
         }
     }
 }
