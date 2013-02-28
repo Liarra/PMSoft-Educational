@@ -1,14 +1,17 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace DarvinApp.Presentation
 {
     public partial class NamingDialog
     {
-        public NamingDialog()
+        public NamingDialog(IMessenger messenger)
         {
+            if (messenger == null)
+                throw new ArgumentNullException("messenger");
             InitializeComponent();
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            messenger.Register<NotificationMessage>(this, NotificationMessageReceived);
         }
 
         private void NotificationMessageReceived(NotificationMessage msg)

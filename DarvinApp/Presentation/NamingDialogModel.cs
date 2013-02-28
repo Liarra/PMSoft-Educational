@@ -32,7 +32,7 @@ namespace DarvinApp.Presentation
             _animalTypeNames = animalTypeNames;
             _messenger = messenger;
 
-            Messenger.Default.Register<NotificationMessage>(this, token, NotificationMessageReceived);
+            _messenger.Register<NotificationMessage>(this, token, NotificationMessageReceived);
         }
 
         public string AnimalTypeName

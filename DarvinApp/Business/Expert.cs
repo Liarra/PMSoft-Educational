@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using DarvinApp.Business.DataTypes;
 
 namespace DarvinApp.Business
@@ -11,7 +12,7 @@ namespace DarvinApp.Business
 
         public Expert()
         {
-            _supportedTypes = new List<AnimalType>
+            _supportedTypes =  new ReadOnlyCollection<AnimalType>(new List<AnimalType>
                 {
                     AnimalType.Emperors,
                     AnimalType.FlowerVaseBreakers,
@@ -22,7 +23,7 @@ namespace DarvinApp.Business
                     AnimalType.StrayDogs,
                     AnimalType.Tale,
                     AnimalType.Tamed
-                };
+                });
 
             _scoretable = new Dictionary<AnimalType, int>();
             FillTheDictionaryWithZeros();
@@ -36,7 +37,7 @@ namespace DarvinApp.Business
             }
         }
 
-        public IList<AnimalType> SupportedTypes
+        public IEnumerable<AnimalType> SupportedTypes
         {
             get { return _supportedTypes; }
         }

@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DarvinApp.Business.DataTypes
 {
     public class Question
     {
         private readonly string _text;
+        private readonly IList<AnimalType> _typesGettingScoreFromPositive;
+        private readonly IList<AnimalType> _typesLosingScoreFromPositive;
 
-        public Question(string text)
+        public Question(string text, IList<AnimalType> typesGettingScoreFromPositive,
+                        IList<AnimalType> typesLosingScoreFromPositive)
         {
             if (string.IsNullOrEmpty(text))
                 throw new ArgumentNullException("text");
 
             _text = text;
-            TypesLosingScoreFromPositiveAnswer = new List<AnimalType>();
-            TypesGettingScoreFromPositiveAnswer = new List<AnimalType>();
+            _typesGettingScoreFromPositive = typesGettingScoreFromPositive;
+            _typesLosingScoreFromPositive = typesLosingScoreFromPositive;
         }
 
         public string Text
@@ -22,7 +26,14 @@ namespace DarvinApp.Business.DataTypes
             get { return _text; }
         }
 
-        public IList<AnimalType> TypesGettingScoreFromPositiveAnswer { get; set; }
-        public IList<AnimalType> TypesLosingScoreFromPositiveAnswer { get; set; }
+        public IEnumerable<AnimalType> TypesGettingScoreFromPositiveAnswer
+        {
+            get { return new ReadOnlyCollection<AnimalType>(_typesGettingScoreFromPositive); }
+        }
+
+        public IEnumerable<AnimalType> TypesLosingScoreFromPositiveAnswer
+        {
+            get { return new ReadOnlyCollection<AnimalType>(_typesLosingScoreFromPositive); }
+        }
     }
 }

@@ -10,6 +10,11 @@ namespace DarvinAppTest.Business
     [TestFixture]
     public class ExpertFixture
     {
+        private Question GetStupidQuestion()
+        {
+            return new Question("Who, me?", new List<AnimalType>(), new List<AnimalType>());
+        }
+
         [Test]
         public void ReadyToDecide_WithNoQuestionsAnswered_ExpectedFalse()
         {
@@ -27,7 +32,7 @@ namespace DarvinAppTest.Business
             var expertToTest = new Expert();
 
             for (int i = 0; i < numberOfQuestions; i++)
-                expertToTest.SubmitAnswer(Substitute.For<Question>("123"), false);
+                expertToTest.SubmitAnswer(GetStupidQuestion(), false);
 
             bool actualReadyToDecide = expertToTest.ReadyToDecide();
             Assert.False(actualReadyToDecide);
@@ -46,7 +51,7 @@ namespace DarvinAppTest.Business
         {
             var expertToTest = new Expert();
             for (int i = 0; i < 5; i++)
-                expertToTest.SubmitAnswer(Substitute.For<Question>("123"), Arg.Any<bool>());
+                expertToTest.SubmitAnswer(GetStupidQuestion(), Arg.Any<bool>());
             var decicion = expertToTest.Decision();
             Assert.IsNotNull(decicion);
             Assert.IsInstanceOf<AnimalType>(decicion);
@@ -63,13 +68,8 @@ namespace DarvinAppTest.Business
         public void Decision_OneSingleTypedQuestionAnswer_ExpectedRighType(AnimalType type)
         {
             var expertToTest = new Expert();
-            var questionToAnswer = new Question("123")
-                {
-                    TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
-                        {
-                            type
-                        }
-                };
+            var questionToAnswer = new Question("123", new List<AnimalType> {type}, new List<AnimalType>());
+
 
             expertToTest.SubmitAnswer(questionToAnswer, true);
             Assert.AreEqual(expertToTest.Decision(), type);
@@ -86,14 +86,7 @@ namespace DarvinAppTest.Business
         public void Decision_OneMultiTypedQuestionAnswer_ExpectedOther(AnimalType type1, AnimalType type2)
         {
             var expertToTest = new Expert();
-            var questionToAnswer = new Question("123")
-                {
-                    TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
-                        {
-                            type1,
-                            type2
-                        }
-                };
+            var questionToAnswer = new Question("123", new List<AnimalType> {type1, type2}, new List<AnimalType>());
 
             expertToTest.SubmitAnswer(questionToAnswer, true);
             Assert.AreEqual(AnimalType.Others, expertToTest.Decision());
@@ -106,29 +99,8 @@ namespace DarvinAppTest.Business
             var type1 = Arg.Any<AnimalType>();
             var type2 = Arg.Any<AnimalType>();
 
-            var questionToAnswer1 = new Question("123")
-                {
-                    TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
-                        {
-                            type1,
-                        },
-                    TypesLosingScoreFromPositiveAnswer = new List<AnimalType>
-                        {
-                            type2
-                        }
-                };
-
-            var questionToAnswer2 = new Question("123")
-                {
-                    TypesGettingScoreFromPositiveAnswer = new List<AnimalType>
-                        {
-                            type2,
-                        },
-                    TypesLosingScoreFromPositiveAnswer = new List<AnimalType>
-                        {
-                            type1
-                        }
-                };
+            var questionToAnswer1 = new Question("123", new List<AnimalType> {type1}, new List<AnimalType> {type2});
+            var questionToAnswer2 = new Question("123", new List<AnimalType> {type2}, new List<AnimalType> {type1});
 
             expertToTest.SubmitAnswer(questionToAnswer1, true);
             expertToTest.SubmitAnswer(questionToAnswer2, true);
@@ -139,8 +111,8 @@ namespace DarvinAppTest.Business
         public void SubmitAnswer_NullQuestion_ExpectedANE()
         {
             var expertToTest = new Expert();
-            
-            Assert.Throws<ArgumentNullException>(()=>expertToTest.SubmitAnswer(null,true));
+
+            Assert.Throws<ArgumentNullException>(() => expertToTest.SubmitAnswer(null, true));
         }
     }
 }

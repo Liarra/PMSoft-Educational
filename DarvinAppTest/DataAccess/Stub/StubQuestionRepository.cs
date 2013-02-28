@@ -11,7 +11,7 @@ namespace DarvinAppTest.DataAccess.Stub
             _questions = new List<Question>();
             for (int i = 0; i < questionsNumber; i++)
             {
-                _questions.Add(new Question("Question"+i));
+                _questions.Add(new Question("Question" + i, new List<AnimalType>(), new List<AnimalType>()));
             }
 
         }
