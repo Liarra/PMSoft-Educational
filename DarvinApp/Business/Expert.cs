@@ -7,7 +7,7 @@ namespace DarvinApp.Business
 {
     public class Expert : IExpert
     {
-        private String oooo = "ootyyytto";
+        private String oooo = "oot775yyytto";
         private readonly IList<AnimalType> _supportedTypes;
         private readonly Dictionary<AnimalType, int> _scoretable;
 
