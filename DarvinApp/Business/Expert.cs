@@ -7,7 +7,7 @@ namespace DarvinApp.Business
 {
     public class Expert : IExpert
     {
-  
+  777
         private readonly IList<AnimalType> _supportedTypes;
         private readonly Dictionary<AnimalType, int> _scoretable;
 
